@@ -1,0 +1,30 @@
+{
+	"type": "substrate",
+	"name": "s_path",
+	"directed": false,
+	"nodes": [
+		{"id": 1, "cost": 1, "cap": 1},
+		{"id": 2, "cost": 1, "cap": 1},
+		{"id": 3, "cost": 1, "cap": 1},
+		{"id": 4, "cost": 1, "cap": 1},
+		{"id": 5, "cost": 1, "cap": 1},
+		{"id": 6, "cost": 1, "cap": 1},
+		{"id": 7, "cost": 1, "cap": 1},
+		{"id": 8, "cost": 1, "cap": 1},
+		{"id": 9, "cost": 1, "cap": 1},
+		{"id": 10, "cost": 1, "cap": 1},
+		{"id": 11, "cost": 1, "cap": 1}
+	],
+	"edges": [
+		{"source": 1, "target": 2,  "cost": 1, "cap": 5},
+		{"source": 1, "target": 3,  "cost": 5, "cap": 5},
+		{"source": 1, "target": 4,  "cost": 5, "cap": 5},
+		{"source": 1, "target": 5,  "cost": 5, "cap": 5},
+		{"source": 1, "target": 6,  "cost": 5, "cap": 5},
+		{"source": 1, "target": 7,  "cost": 5, "cap": 5},
+		{"source": 1, "target": 8,  "cost": 5, "cap": 5},
+		{"source": 1, "target": 9,  "cost": 5, "cap": 5},
+		{"source": 1, "target": 10,  "cost": 5, "cap": 5},
+		{"source": 1, "target": 11,  "cost": 5, "cap": 5}
+	]
+} 

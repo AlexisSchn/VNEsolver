@@ -1,0 +1,482 @@
+using JuMP, CPLEX
+
+
+#############============= PRICERRRR
+
+struct SubProblem
+    model
+    s_network
+    v_network
+    subgraph
+end
+
+
+function set_up_pricer(instance, subgraph)
+
+    s_network = instance.s_network
+    s_network_dir = instance.s_network_dir
+    
+    #### Model
+    model = Model(CPLEX.Optimizer)
+
+    ### Variables
+    @variable(model, x[v_node in vertices(subgraph.graph), s_node in vertices(s_network)], binary=true);
+    @variable(model, y[v_edge in edges(subgraph.graph), s_edge in edges(s_network_dir)], binary=true);
+
+
+    ### Constraints
+
+    ## Nodes
+
+    # one substrate node per virtual node
+    for v_node in vertices(subgraph.graph)
+        @constraint(model, sum(x[v_node, s_node] for s_node in vertices(s_network)) == 1)
+    end
+
+    # if one to one : one virtual node per substrate node
+    for s_node in vertices(s_network)
+        @constraint(model, sum(x[v_node, s_node] for v_node in vertices(subgraph.graph)) <= 1)
+    end
+
+
+
+    # node capacity
+    for s_node in vertices(s_network)
+        @constraint(model, 
+            sum( x[v_node, s_node] 
+                for v_node in vertices(subgraph.graph) ) 
+            <= 
+            instance.s_network[s_node][:cap] )
+    end
+
+
+    ## Edges 
+    
+    # edge capacity (undirected version)
+    for s_edge in edges(s_network)
+        @constraint(model, 
+        sum( (y[v_edge, s_edge] + y[v_edge, get_reverse_edge(s_network_dir, s_edge)]  )
+                for v_edge in edges(subgraph.graph)) 
+            <= 
+            s_network[src(s_edge), dst(s_edge)][:cap] )
+    end
+    
+    # Flow conservation
+    for s_node in vertices(s_network)
+        for v_edge in edges(subgraph.graph)
+            @constraint(model, 
+                x[src(v_edge), s_node] - x[dst(v_edge), s_node] 
+                ==
+                sum(y[v_edge, s_edge] for s_edge in get_out_edges(s_network_dir, s_node)) - 
+                    sum(y[v_edge, s_edge] for s_edge in get_in_edges(s_network_dir, s_node))
+            )
+        end
+    end
+
+
+    ## Departure cst : Node + Edge
+    for s_node in vertices(s_network)
+        for v_node in vertices(subgraph.graph)
+            for v_edge in get_out_edges(subgraph.graph, v_node)
+                @constraint(model, sum(y[v_edge, s_edge] for s_edge in get_out_edges(s_network_dir, s_node)) >= x[v_node, s_node])
+            end
+        end
+    end
+
+    # Outgoing edges cap: think about the original virtual graph!
+    for v_node in vertices(subgraph.graph)
+        for s_node in vertices(s_network)
+            necessary_bw = degree(instance.v_network, subgraph.nodes_of_main_graph[v_node])
+            s_edges_incident = [get_edge(s_network, s_node, neighbor) for neighbor in neighbors(s_network, s_node)]
+            available_bw = sum(s_network[src(s_edge), dst(s_edge)][:cap] for s_edge in s_edges_incident;init=0.0)
+            if necessary_bw > available_bw
+                @constraint(model, model[:x][v_node, s_node] == 0)
+            end 
+        end
+    end
+
+    return SubProblem(model, instance.s_network, instance.v_network, subgraph);
+end
+
+
+
+function set_up_pricer_cons(instance, subgraph)
+
+    s_network = instance.s_network
+    s_network_dir = instance.s_network_dir
+    original_v_network = instance.v_network
+
+    #### Model
+    model = Model(CPLEX.Optimizer)
+
+    ### Variables
+    @variable(model, x[v_node in vertices(subgraph.graph), s_node in vertices(s_network)], binary=true);
+    @variable(model, y[v_edge in edges(subgraph.graph), s_edge in edges(s_network_dir)], binary=true);
+
+
+    ### Constraints
+
+    ## Nodes
+
+    # one substrate node per virtual node
+    for v_node in vertices(subgraph.graph)
+        @constraint(model, sum(x[v_node, s_node] for s_node in vertices(s_network)) == 1)
+    end
+
+    # if one to one : one virtual node per substrate node
+    for s_node in vertices(s_network)
+        @constraint(model, sum(x[v_node, s_node] for v_node in vertices(subgraph.graph)) <= 1)
+    end
+
+
+
+    # node capacity
+    for s_node in vertices(s_network)
+        @constraint(model, 
+            sum( x[v_node, s_node] 
+                for v_node in vertices(subgraph.graph) ) 
+            <= 
+            instance.s_network[s_node][:cap] )
+    end
+
+
+    ## Edges 
+    
+    # edge capacity (undirected version)
+    for s_edge in edges(s_network)
+        @constraint(model, 
+            sum( (y[v_edge, get_edge(s_network_dir, src(s_edge), dst(s_edge))] + y[v_edge, get_edge(s_network_dir, dst(s_edge), src(s_edge))]) 
+                for v_edge in edges(subgraph.graph)) 
+            <= 
+            s_network[src(s_edge), dst(s_edge)][:cap] )
+    end
+    
+    # Flow conservation
+    for s_node in vertices(s_network)
+        for v_edge in edges(subgraph.graph)
+            @constraint(model, 
+                x[src(v_edge), s_node] - x[dst(v_edge), s_node] 
+                ==
+                sum(y[v_edge, s_edge] for s_edge in get_out_edges(s_network_dir, s_node)) - 
+                    sum(y[v_edge, s_edge] for s_edge in get_in_edges(s_network_dir, s_node))
+            )
+        end
+    end
+
+
+    ## Departure cst : Node + Edge
+    for s_node in vertices(s_network)
+        for v_node in vertices(subgraph.graph)
+            for v_edge in get_out_edges(subgraph.graph, v_node)
+                @constraint(model, sum(y[v_edge, s_edge] for s_edge in get_out_edges(s_network_dir, s_node)) >= x[v_node, s_node])
+            end
+        end
+    end
+
+    # Outgoing edges cap: think about the original virtual graph!
+    for v_node in vertices(subgraph.graph)
+        for s_node in vertices(s_network)
+            necessary_bw = degree(instance.v_network, subgraph.nodes_of_main_graph[v_node])
+            s_edges_incident = [get_edge(s_network, s_node, neighbor) for neighbor in neighbors(s_network, s_node)]
+            available_bw = sum(s_network[src(s_edge), dst(s_edge)][:cap] for s_edge in s_edges_incident;init=0.0)
+            if necessary_bw > available_bw
+                @constraint(model, model[:x][v_node, s_node] == 0)
+            end 
+        end
+    end
+
+
+    # Additional constraint !
+    for s_node in vertices(s_network)
+        s_edges_incident = [get_edge(s_network, s_node, neighbor) for neighbor in neighbors(s_network, s_node)]
+        available_bw = sum(s_network[src(s_edge), dst(s_edge)][:cap] for s_edge in s_edges_incident;init=0.0)
+
+        @constraint(model, sum(y[v_edge, s_edge] for s_edge in get_in_edges(s_network_dir, s_node) for v_edge in edges(subgraph.graph))
+                                + sum(y[v_edge, s_edge] for s_edge in get_out_edges(s_network_dir, s_node) for v_edge in edges(subgraph.graph)) 
+                                + sum(x[v_node, s_node] * (degree(original_v_network, subgraph.nodes_of_main_graph[v_node]) - degree(subgraph.graph, v_node)) for v_node in vertices(subgraph.graph)) 
+                                    <= available_bw)
+    end
+
+
+
+    return SubProblem(model, instance.s_network, instance.v_network, subgraph);
+end
+
+
+
+function set_up_pricer_ghost(instance, subgraph)
+
+    s_network = instance.s_network
+    s_network_dir = instance.s_network_dir
+    original_v_network = instance.v_network
+
+    ghost_nodes = []
+    ghost_nodes_appearances = Dict() # For each ghost node, we record how many neighbor it has in the subgraph.
+    # ^ useful for additional constraints ?
+    ghost_edges = []
+    
+    for v_node in vertices(subgraph.graph)
+        for v_neighbor in neighbors(original_v_network, subgraph.nodes_of_main_graph[v_node])
+            if (v_neighbor ∉ ghost_nodes) && (v_neighbor ∉ subgraph.nodes_of_main_graph)
+               push!(ghost_nodes, v_neighbor) 
+               ghost_nodes_appearances[v_neighbor] = 0
+            end
+
+            if v_neighbor ∉ subgraph.nodes_of_main_graph
+                edge_neigh = Dict()
+                edge_neigh[:src] = v_node
+                edge_neigh[:dst] = v_neighbor
+                push!(ghost_edges, edge_neigh)
+                ghost_nodes_appearances[v_neighbor] = ghost_nodes_appearances[v_neighbor] + 1
+            end
+        end
+    end
+
+
+    #### Model
+    model = Model(CPLEX.Optimizer)
+
+    ### Variables
+    @variable(model, x[v_node in vertices(subgraph.graph), s_node in vertices(s_network)], binary=true);
+    @variable(model, y[v_edge in edges(subgraph.graph), s_edge in edges(s_network_dir)], binary=true);
+    @variable(model, x_ghost[ghost_nodes, vertices(s_network)], binary=true);
+    @variable(model, y_ghost[ghost_edges, edges(s_network_dir)], binary=true);
+
+
+
+    ### Constraints
+
+    ## Nodes
+
+    # one substrate node per virtual node
+    for v_node in vertices(subgraph.graph)
+        @constraint(model, sum(x[v_node, s_node] for s_node in vertices(s_network)) == 1)
+    end
+
+    
+    for v_neighbor in ghost_nodes
+        @constraint(model, sum(x_ghost[v_neighbor, s_node] for s_node in vertices(s_network)) == 1)
+    end
+    
+    #= if one to one : one virtual node per substrate node
+    for s_node in vertices(s_network)
+        @constraint(model, sum(x[v_node, s_node] for v_node in vertices(subgraph.graph)) <= 1)
+    end
+    =#
+
+
+    # node capacity
+    for s_node in vertices(s_network)
+        @constraint(model, 
+            sum( x[v_node, s_node] 
+                for v_node in vertices(subgraph.graph))
+            + sum( x_ghost[v_neighbor, s_node]
+                for v_neighbor in ghost_nodes)
+            <= 
+            s_network[s_node][:cap] )
+    end
+
+
+    ## Edges 
+    
+    # edge capacity (undirected version)
+    for s_edge in edges(s_network)
+        @constraint(model, 
+            sum( (y[v_edge, get_edge(s_network_dir, src(s_edge), dst(s_edge))] + y[v_edge, get_edge(s_network_dir, dst(s_edge), src(s_edge))]) 
+                for v_edge in edges(subgraph.graph)) 
+            + sum((y_ghost[v_adjacent_edge, get_edge(s_network_dir, src(s_edge), dst(s_edge))] + y_ghost[v_adjacent_edge, get_edge(s_network_dir, dst(s_edge), src(s_edge))]  )
+                for v_adjacent_edge in ghost_edges) 
+            <= 
+            s_network[src(s_edge), dst(s_edge)][:cap] )
+    end
+    
+
+    # Flow conservation
+    for s_node in vertices(s_network)
+        for v_edge in edges(subgraph.graph)
+            @constraint(model, 
+                x[src(v_edge), s_node] - x[dst(v_edge), s_node] 
+                ==
+                sum(y[v_edge, s_edge] for s_edge in get_out_edges(s_network_dir, s_node)) - 
+                    sum(y[v_edge, s_edge] for s_edge in get_in_edges(s_network_dir, s_node))
+            )
+        end
+    end
+
+    # for ghosts edges!
+    for s_node in vertices(s_network)
+        for v_adjacent_edge in ghost_edges
+            @constraint(model, 
+                x[v_adjacent_edge[:src], s_node] - x_ghost[v_adjacent_edge[:dst], s_node] 
+                ==
+                sum(y_ghost[v_adjacent_edge, s_edge] for s_edge in get_out_edges(s_network_dir, s_node)) - 
+                    sum(y_ghost[v_adjacent_edge, s_edge] for s_edge in get_in_edges(s_network_dir, s_node))
+            )
+        end
+    end
+
+
+    ## Departure cst : Node + Edge
+    for s_node in vertices(s_network)
+        for v_node in vertices(subgraph.graph)
+            for v_edge in get_out_edges(subgraph.graph, v_node)
+                @constraint(model, sum(y[v_edge, s_edge] for s_edge in get_out_edges(s_network_dir, s_node)) >= x[v_node, s_node])
+            end
+        end
+    end
+
+    # for ghost edges!
+    for s_node in vertices(s_network)
+        for v_adjacent_edge in ghost_edges
+            @constraint(model, sum(y_ghost[v_adjacent_edge, s_edge] for s_edge in get_out_edges(s_network_dir, s_node)) 
+                >= x[v_adjacent_edge[:src], s_node])
+        end
+    end
+
+
+    # Outgoing edges cap: think about the original virtual graph!
+    for v_node in vertices(subgraph.graph)
+        for s_node in vertices(s_network)
+            necessary_bw = degree(instance.v_network, subgraph.nodes_of_main_graph[v_node])
+            s_edges_incident = [get_edge(s_network, s_node, neighbor) for neighbor in neighbors(s_network, s_node)]
+            available_bw = sum(s_network[src(s_edge), dst(s_edge)][:cap] for s_edge in s_edges_incident;init=0.0)
+            if necessary_bw > available_bw
+                @constraint(model, model[:x][v_node, s_node] == 0)
+            end 
+        end
+    end
+
+    # ALSO ON GHOST NODES AHHHH
+    for v_neighbor in ghost_nodes
+        necessary_bw = degree(original_v_network, v_neighbor)
+        for s_node in vertices(s_network)
+            s_edges_incident = [get_edge(s_network, s_node, neighbor) for neighbor in neighbors(s_network, s_node)]
+            available_bw = sum(s_network[src(s_edge), dst(s_edge)][:cap] for s_edge in s_edges_incident; init=0.0)
+            if necessary_bw > available_bw
+                @constraint(model, x_ghost[v_neighbor, s_node] == 0)
+            end 
+        end
+    end
+
+        
+
+    return SubProblem(model, instance.s_network, instance.v_network, subgraph);
+end
+
+
+
+
+function update_solve_pricer(instance, vn_decompo, pricer, dual_costs; time_limit = 1000)
+
+    model = pricer.model
+    subgraph = pricer.subgraph
+    s_network = instance.s_network
+    s_network_dir = instance.s_network_dir
+
+    ### Objective
+    placement_cost = @expression(model, 
+        sum( ( s_network[s_node][:cost] - dual_costs.capacity_s_node[s_node] ) * model[:x][v_node, s_node] 
+            for v_node in vertices(subgraph.graph) for s_node in vertices(s_network) ))
+
+    routing_cost = @expression(model, sum( 
+        ( s_network[src(s_edge), dst(s_edge)][:cost] - dual_costs.capacity_s_edge[s_edge] ) 
+        *  (model[:y][v_edge, s_edge] + model[:y][v_edge, get_reverse_edge(s_network_dir, s_edge)])
+                for v_edge in edges(subgraph.graph) for s_edge in edges(s_network) ))
+
+
+            
+    # flow conservation
+    flow_conservation_cost = AffExpr(0.)
+
+    for s_node in vertices(s_network)
+        for connecting_edge in vn_decompo.v_edges_master
+            if subgraph ∈ keys(vn_decompo.v_nodes_assignment[src(connecting_edge)])
+                v_node_subgraph = vn_decompo.v_nodes_assignment[src(connecting_edge)][subgraph]
+                add_to_expression!(
+                    flow_conservation_cost, 
+                    -dual_costs.flow_conservation[connecting_edge][s_node] , 
+                    model[:x][v_node_subgraph, s_node])
+            end
+            if subgraph ∈ keys(vn_decompo.v_nodes_assignment[dst(connecting_edge)])
+                v_node_subgraph = vn_decompo.v_nodes_assignment[dst(connecting_edge)][subgraph]
+                add_to_expression!(
+                    flow_conservation_cost, 
+                    +dual_costs.flow_conservation[connecting_edge][s_node], 
+                    model[:x][v_node_subgraph, s_node])
+            end
+        end
+    end
+
+
+    # departure !
+    departure_costs = AffExpr(0.)
+    for s_node in vertices(s_network)
+        for connecting_edge in vn_decompo.v_edges_master
+            if subgraph ∈ keys(vn_decompo.v_nodes_assignment[src(connecting_edge)])
+                v_node_subgraph = vn_decompo.v_nodes_assignment[src(connecting_edge)][subgraph]
+                add_to_expression!(
+                    departure_costs, 
+                    -dual_costs.departure[connecting_edge][s_node], 
+                    model[:x][v_node_subgraph,s_node])
+            end
+        end
+    end
+
+
+    @objective(model, Min, 
+            -dual_costs.convexity[subgraph]
+            + placement_cost + routing_cost 
+            + flow_conservation_cost 
+            + departure_costs);
+
+    set_silent(model)
+    set_time_limit_sec(model, time_limit)
+    optimize!(model)
+
+    status = primal_status(model)
+    if (status != MOI.FEASIBLE_POINT)
+        println("Infeasible subproblem... $status")
+        return nothing, 10e6, 10e6
+    end
+
+    # Get the solution
+    x_values = value.(model[:x])
+    y_values = value.(model[:y])
+    cost_of_column = 0.
+
+    node_placement = []
+    for v_node in vertices(subgraph.graph)
+        for s_node in vertices(s_network)
+            if x_values[v_node, s_node] > 0.99
+                append!(node_placement, s_node)
+                cost_of_column += pricer.s_network[s_node][:cost]
+            end
+        end
+    end
+
+
+    edge_routing = Dict()
+    for v_edge in edges(subgraph.graph)
+        if node_placement[src(v_edge)] == node_placement[dst(v_edge)]
+            edge_routing[v_edge] = Path(src(v_edge), dst(v_edge), [], 0)
+        end
+        used_edges = []
+        for s_edge in edges(s_network_dir)
+            if y_values[v_edge, s_edge] > 0.99
+                push!(used_edges, s_edge)
+                cost_of_column += s_network_dir[src(s_edge), dst(s_edge)][:cost]
+            end
+        end
+        edge_routing[v_edge] = order_path(s_network_dir, used_edges, node_placement[src(v_edge)], node_placement[dst(v_edge)]) 
+    end
+    mapping = Mapping(subgraph.graph, s_network_dir, node_placement, edge_routing)
+    #println(mapping)
+    #println(cost_of_column)
+
+    dual_value = objective_value(model)
+    #println("The price of the column is : $(cost_of_column), and the obj is : $(dual_value)")
+
+    return mapping, cost_of_column, dual_value
+
+
+end

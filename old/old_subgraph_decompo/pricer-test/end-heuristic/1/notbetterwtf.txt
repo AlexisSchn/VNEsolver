@@ -1,0 +1,602 @@
+julia> solve_subgraph_decompo(instance, time_max=300, nb_part=4)
+Starting...
+4 clusters to do, with inbalance 0.1...
+Decomposition set:
+For MetaGraph_v_Xspedius, there is 4 subgraphs:
+       subgraph_1 with 8 nodes
+       subgraph_2 with 9 nodes
+       subgraph_3 with 9 nodes
+       subgraph_4 with 8 nodes
+   and 10 cutting edges
+Master problem set...
+
+==================== Starting CG ====================
+-------Part 0: lower bound through flow formulation
+Bound obtained: 224.37346912835724
+
+
+------- Part 1: Initialization
+Paving the substrate network... done for subgraph_1, 8 columns found; done for subgraph_2, 8 columns found; done for subgraph_3, 8 columns found; done for subgraph_4, 8 columns found; Initialization complete, 32 columns found
+
+
+------- Part 2: Reduced pricers
+4 substrate subgraphs to do, with at least 22.0 capacitated nodes...
+Iter  1  CG bound: 20000136.375  lower bound:    224.373     37 column  time:  0.01s  average reduced cost: -9999884.475
+Iter  2  CG bound: 15000247.938  lower bound:    224.373     42 column  time:  5.02s  average reduced cost: -9999767.525
+Iter  3  CG bound: 11764998.973  lower bound:    224.373     47 column  time:  5.20s  average reduced cost: -5176445.471
+Iter  4  CG bound: 6666995.246  lower bound:    224.373     52 column  time:  5.49s  average reduced cost: -2666685.689
+Iter  5  CG bound: 5581740.679  lower bound:    224.373     57 column  time:  6.25s  average reduced cost: -11162641.358
+Iter  6  CG bound: 4102929.394  lower bound:    224.373     62 column  time:  6.75s  average reduced cost: -13333185.347
+Iter  7  CG bound:    418.594  lower bound:    224.373     67 column  time:  7.11s  average reduced cost:   -234.096
+Iter  8  CG bound:    356.035  lower bound:    224.373     72 column  time:  8.19s  average reduced cost:   -107.891
+Iter  9  CG bound:    340.858  lower bound:    224.373     77 column  time:  8.84s  average reduced cost:    -63.485
+Iter 10  CG bound:    322.753  lower bound:    224.373     82 column  time:  9.56s  average reduced cost:    -50.000
+Iter 11  CG bound:    319.271  lower bound:    224.373     87 column  time: 10.30s  average reduced cost:    -40.361
+Iter 12  CG bound:    317.591  lower bound:    224.373     92 column  time: 11.18s  average reduced cost:    -34.794
+Iter 13  CG bound:    316.410  lower bound:    224.373     97 column  time: 12.09s  average reduced cost:    -35.318
+Iter 14  CG bound:    314.773  lower bound:    224.373    102 column  time: 13.08s  average reduced cost:    -33.482
+Iter 15  CG bound:    312.651  lower bound:    224.373    107 column  time: 14.18s  average reduced cost:    -28.402
+Iter 16  CG bound:    310.074  lower bound:    224.373    112 column  time: 15.30s  average reduced cost:    -29.546
+Iter 17  CG bound:    308.609  lower bound:    224.373    117 column  time: 16.23s  average reduced cost:    -27.044
+Iter 18  CG bound:    306.686  lower bound:    224.373    122 column  time: 17.04s  average reduced cost:    -25.525
+Iter 19  CG bound:    305.177  lower bound:    224.373    127 column  time: 18.50s  average reduced cost:    -23.167
+Iter 20  CG bound:    303.042  lower bound:    224.373    132 column  time: 19.34s  average reduced cost:    -24.630
+Iter 21  CG bound:    300.762  lower bound:    224.373    137 column  time: 20.97s  average reduced cost:    -21.980
+Iter 22  CG bound:    300.020  lower bound:    224.373    142 column  time: 22.25s  average reduced cost:    -23.734
+Iter 23  CG bound:    299.211  lower bound:    224.373    147 column  time: 23.08s  average reduced cost:    -21.992
+Iter 24  CG bound:    297.991  lower bound:    224.373    152 column  time: 24.56s  average reduced cost:    -20.892
+Iter 25  CG bound:    295.694  lower bound:    224.373    157 column  time: 25.77s  average reduced cost:    -17.864
+Iter 26  CG bound:    294.704  lower bound:    224.373    162 column  time: 27.48s  average reduced cost:    -18.413
+Iter 27  CG bound:    294.291  lower bound:    224.373    167 column  time: 29.82s  average reduced cost:    -15.788
+Iter 28  CG bound:    293.790  lower bound:    224.373    172 column  time: 31.36s  average reduced cost:    -16.832
+Iter 29  CG bound:    292.429  lower bound:    224.373    177 column  time: 32.66s  average reduced cost:    -15.230
+Iter 30  CG bound:    292.324  lower bound:    224.373    182 column  time: 33.86s  average reduced cost:    -15.208
+Iter 31  CG bound:    292.096  lower bound:    224.373    187 column  time: 36.45s  average reduced cost:    -15.850
+Iter 32  CG bound:    290.999  lower bound:    224.373    192 column  time: 37.89s  average reduced cost:    -12.398
+Iter 33  CG bound:    290.685  lower bound:    224.373    197 column  time: 39.35s  average reduced cost:    -14.980
+Iter 34  CG bound:    290.024  lower bound:    224.373    202 column  time: 40.58s  average reduced cost:    -14.755
+Iter 35  CG bound:    289.004  lower bound:    224.373    207 column  time: 43.79s  average reduced cost:    -13.117
+Iter 36  CG bound:    288.715  lower bound:    224.373    212 column  time: 46.07s  average reduced cost:    -11.868
+Iter 37  CG bound:    288.202  lower bound:    224.373    217 column  time: 48.01s  average reduced cost:    -11.831
+Iter 38  CG bound:    287.983  lower bound:    224.373    222 column  time: 50.45s  average reduced cost:    -11.180
+Iter 39  CG bound:    287.493  lower bound:    224.373    227 column  time: 52.49s  average reduced cost:    -12.295
+Iter 40  CG bound:    287.245  lower bound:    224.373    232 column  time: 54.05s  average reduced cost:    -12.478
+Iter 41  CG bound:    286.910  lower bound:    224.373    237 column  time: 57.58s  average reduced cost:     -9.705
+Iter 42  CG bound:    286.270  lower bound:    224.373    242 column  time: 60.01s  average reduced cost:     -8.880
+Iter 43  CG bound:    286.167  lower bound:    224.373    247 column  time: 63.01s  average reduced cost:     -9.676
+Iter 44  CG bound:    285.986  lower bound:    224.373    252 column  time: 65.23s  average reduced cost:     -6.657
+Iter 45  CG bound:    285.786  lower bound:    224.373    257 column  time: 68.44s  average reduced cost:     -8.950
+Iter 46  CG bound:    285.574  lower bound:    224.373    262 column  time: 72.13s  average reduced cost:     -9.266
+Iter 47  CG bound:    285.437  lower bound:    224.373    267 column  time: 74.60s  average reduced cost:     -7.866
+Iter 48  CG bound:    285.368  lower bound:    224.373    272 column  time: 79.06s  average reduced cost:     -8.154
+Iter 49  CG bound:    285.178  lower bound:    224.373    277 column  time: 81.47s  average reduced cost:     -8.318
+Iter 50  CG bound:    284.926  lower bound:    224.373    282 column  time: 84.90s  average reduced cost:     -6.977
+Iter 51  CG bound:    284.861  lower bound:    224.373    287 column  time: 89.21s  average reduced cost:     -7.982
+Iter 52  CG bound:    284.636  lower bound:    224.373    292 column  time: 91.51s  average reduced cost:     -7.593
+Iter 53  CG bound:    284.570  lower bound:    224.373    297 column  time: 94.81s  average reduced cost:     -6.429
+Iter 54  CG bound:    284.463  lower bound:    224.373    302 column  time: 98.86s  average reduced cost:     -6.078
+Iter 55  CG bound:    284.429  lower bound:    224.373    307 column  time: 103.25s  average reduced cost:     -6.335
+Iter 56  CG bound:    284.112  lower bound:    224.373    312 column  time: 105.76s  average reduced cost:     -5.860
+Iter 57  CG bound:    283.860  lower bound:    224.373    317 column  time: 108.63s  average reduced cost:     -7.730
+Iter 58  CG bound:    283.654  lower bound:    224.373    322 column  time: 111.56s  average reduced cost:     -7.705
+Iter 59  CG bound:    283.370  lower bound:    224.373    327 column  time: 116.45s  average reduced cost:     -5.449
+Iter 60  CG bound:    283.218  lower bound:    224.373    332 column  time: 121.02s  average reduced cost:     -6.028
+Iter 61  CG bound:    283.155  lower bound:    224.373    337 column  time: 125.43s  average reduced cost:     -4.222
+Iter 62  CG bound:    283.028  lower bound:    224.373    342 column  time: 131.98s  average reduced cost:     -4.804
+Iter 63  CG bound:    283.024  lower bound:    224.373    347 column  time: 136.38s  average reduced cost:     -5.123
+Iter 64  CG bound:    282.782  lower bound:    224.373    352 column  time: 145.46s  average reduced cost:     -5.056
+Iter 65  CG bound:    282.585  lower bound:    224.373    357 column  time: 148.96s  average reduced cost:     -4.683
+Iter 66  CG bound:    282.253  lower bound:    224.373    362 column  time: 154.90s  average reduced cost:     -4.954
+Iter 67  CG bound:    282.207  lower bound:    224.373    367 column  time: 157.79s  average reduced cost:     -4.388
+Iter 68  CG bound:    281.976  lower bound:    224.373    372 column  time: 162.40s  average reduced cost:     -4.935
+Iter 69  CG bound:    281.895  lower bound:    224.373    377 column  time: 167.31s  average reduced cost:     -4.884
+Iter 70  CG bound:    281.429  lower bound:    224.373    382 column  time: 171.76s  average reduced cost:     -4.850
+Iter 71  CG bound:    281.198  lower bound:    224.373    387 column  time: 176.18s  average reduced cost:     -3.580
+Iter 72  CG bound:    281.196  lower bound:    224.373    392 column  time: 181.68s  average reduced cost:     -4.299
+Iter 73  CG bound:    280.927  lower bound:    224.373    397 column  time: 186.36s  average reduced cost:     -4.686
+Iter 74  CG bound:    280.775  lower bound:    224.373    402 column  time: 192.94s  average reduced cost:     -4.886
+Iter 75  CG bound:    280.688  lower bound:    224.373    407 column  time: 200.04s  average reduced cost:     -3.715
+Iter 76  CG bound:    280.498  lower bound:    224.373    412 column  time: 204.20s  average reduced cost:     -4.177
+Iter 77  CG bound:    280.371  lower bound:    224.373    417 column  time: 207.06s  average reduced cost:     -5.040
+Iter 78  CG bound:    280.307  lower bound:    224.373    422 column  time: 209.98s  average reduced cost:     -4.239
+Iter 79  CG bound:    280.160  lower bound:    224.373    427 column  time: 216.83s  average reduced cost:     -4.036
+Iter 80  CG bound:    280.116  lower bound:    224.373    432 column  time: 220.38s  average reduced cost:     -3.900
+Iter 81  CG bound:    279.981  lower bound:    224.373    437 column  time: 224.91s  average reduced cost:     -3.859
+Iter 82  CG bound:    279.830  lower bound:    224.373    442 column  time: 229.29s  average reduced cost:     -3.517
+Iter 83  CG bound:    279.658  lower bound:    224.373    447 column  time: 234.74s  average reduced cost:     -3.924
+Iter 84  CG bound:    279.577  lower bound:    224.373    452 column  time: 240.90s  average reduced cost:     -4.405
+Iter 85  CG bound:    279.555  lower bound:    224.373    457 column  time: 244.66s  average reduced cost:     -3.768
+Iter 86  CG bound:    279.514  lower bound:    224.373    462 column  time: 248.40s  average reduced cost:     -2.988
+Iter 87  CG bound:    279.497  lower bound:    224.373    467 column  time: 254.05s  average reduced cost:     -3.002
+Iter 88  CG bound:    279.459  lower bound:    224.373    472 column  time: 261.07s  average reduced cost:     -2.953
+Iter 89  CG bound:    279.190  lower bound:    224.373    475 column  time: 265.36s  average reduced cost: 199997.927
+
+ Step 2 finished, reason: time limit. By the way: there was 16
+
+
+
+------- Part 3: Exact pricers
+
+==================== CG finished ====================
+Reason: I don't know
+Time in MP: 1.653 , time in SP: 263.288, time overall: 270.007
+89 iters, final value: 279.19
+====================================================
+
+Let's gongueeee
+Optimal solution : 346.0
+Optimal solution : 347.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 382.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 364.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 371.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 394.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 358.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 396.0
+Optimal solution : 359.0
+Optimal solution : 351.0
+Optimal solution : 372.0
+Optimal solution : 387.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 358.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 360.0
+Optimal solution : 353.0
+Optimal solution : 375.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 354.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 387.0
+Optimal solution : 376.0
+Optimal solution : 376.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 344.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 400.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 346.0
+Optimal solution : 346.99999999999994
+Optimal solution : 338.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 381.0
+Optimal solution : 349.0
+Optimal solution : 371.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 352.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 336.0
+Optimal solution : 373.0
+Optimal solution : 400.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 361.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 350.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 347.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 369.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 354.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 388.0
+Optimal solution : 354.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 352.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 333.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 362.0
+Optimal solution : 361.0
+Optimal solution : 360.0
+Optimal solution : 358.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 344.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 356.0
+Optimal solution : 368.0
+Optimal solution : 332.0
+Optimal solution : 351.0
+Optimal solution : 394.0
+Optimal solution : 383.0
+Optimal solution : 380.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 387.0
+Optimal solution : 372.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 500.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 429.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 427.0
+Optimal solution : 394.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 420.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 400.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 379.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 360.0
+Optimal solution : 367.0
+Optimal solution : 333.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 394.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 357.0
+Optimal solution : 369.0
+Optimal solution : 383.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 361.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 353.0
+Optimal solution : 403.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 371.0
+Optimal solution : 371.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 361.0
+Optimal solution : 393.0
+Optimal solution : 390.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 352.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 380.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 357.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 353.0
+Optimal solution : 388.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 346.0
+Optimal solution : 344.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 377.0
+Optimal solution : 384.0
+Optimal solution : 404.0
+Optimal solution : 416.0
+Optimal solution : 417.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 332.0
+Optimal solution : 355.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 388.0
+Optimal solution : 389.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 384.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 381.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 365.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 384.0
+Optimal solution : 393.0000000000005
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 353.0
+Optimal solution : 388.0
+Optimal solution : 362.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 347.0
+Optimal solution : 400.0
+Optimal solution : 368.0
+Optimal solution : 389.0
+Optimal solution : 371.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 367.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 392.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 336.0
+Optimal solution : 401.0
+Optimal solution : 347.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 394.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 389.0
+Optimal solution : 384.0
+Optimal solution : 349.0
+Optimal solution : 349.0
+Optimal solution : 401.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 402.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 368.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 415.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 382.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 352.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 361.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 356.0
+Optimal solution : 351.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 356.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 415.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 386.0
+Optimal solution : 336.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 359.0
+Optimal solution : 407.0
+Optimal solution : 348.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 419.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 379.0
+Optimal solution : 357.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 364.0
+Optimal solution : 410.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 428.0
+Optimal solution : 332.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 357.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 408.0
+Optimal solution : 372.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 396.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 360.0
+Optimal solution : 417.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 358.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 355.0
+Optimal solution : 371.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 350.0
+Optimal solution : 403.0
+Optimal solution : 375.0
+Optimal solution : 350.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 368.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 347.0
+Optimal solution : 350.0
+Optimal solution : 354.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 347.0
+Optimal solution : 333.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 382.0
+Optimal solution : 427.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 365.0
+Optimal solution : 377.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 342.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 332.0
+Optimal solution : 332.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 389.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 395.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 386.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 367.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 358.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 360.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 357.0
+Optimal solution : 359.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 389.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 337.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 354.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 367.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 347.0
+Optimal solution : 354.0
+Optimal solution : 336.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 348.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 338.0
+Optimal solution : 333.0
+Optimal solution : 359.0
+Optimal solution : 335.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 360.99999999999994
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 350.0
+Optimal solution : 360.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 364.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 353.0
+Optimal solution : 356.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 338.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 388.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 353.0
+Optimal solution : 365.0
+Optimal solution : 356.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 341.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 369.0
+Infeasible or unfinished: NO_SOLUTION
+Optimal solution : 355.0
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+Infeasible or unfinished: NO_SOLUTION
+FAISABLE: 199, OVERALL: 475

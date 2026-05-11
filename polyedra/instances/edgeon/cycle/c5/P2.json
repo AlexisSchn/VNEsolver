@@ -1,0 +1,12 @@
+{
+	"type": "virtual",
+	"name": "v_path",
+	"directed": false,
+	"nodes": [
+		{"id": 1, "dem": 1},
+		{"id": 2, "dem": 1}
+	],
+	"edges": [
+		{"source": 1, "target": 2,  "dem": 1}
+	]
+}

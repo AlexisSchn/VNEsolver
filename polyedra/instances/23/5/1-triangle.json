@@ -1,0 +1,10 @@
+{
+	"type": "virtual",
+	"name": "zoo_v_Claranet",
+	"directed": false,
+	"nodes": [
+		{"id": 1, "dem": 1}
+	],
+	"edges": [
+	]
+}
