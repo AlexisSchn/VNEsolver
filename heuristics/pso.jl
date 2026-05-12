@@ -651,7 +651,7 @@ function solve_PSO_better(instance; nb_particle=25, nb_iter=50, time_max=5, prin
     personal_best_cost = []
 
     global_best = nothing
-    global_best_cost = 9999999
+    global_best_cost = 999999999
 
     # initialization
     print_things && print("initialization... ")
@@ -683,7 +683,7 @@ function solve_PSO_better(instance; nb_particle=25, nb_iter=50, time_max=5, prin
     while iter < nb_iter && time_total < time_max
         for particle in 1:nb_particle
 
-            if personal_best_cost[particle] > 99999 # if the first isnt good, we reinitialized
+            if personal_best_cost[particle] > 9999999 # if the first isnt good, we reinitialized
                 
                 partial_placement = zeros(Int, nv(v_network))
                 partial_placement[most_central_v_node] = rand(capacited_nodes)
@@ -692,7 +692,7 @@ function solve_PSO_better(instance; nb_particle=25, nb_iter=50, time_max=5, prin
                 overall_cost = placement_cost + routing_cost
 
                 
-                if overall_cost < 999999
+                if overall_cost < 9999999
                     position[particle] = placement
                     personal_best[particle] = placement
                     personal_best_cost[particle] = overall_cost
@@ -735,6 +735,11 @@ function solve_PSO_better(instance; nb_particle=25, nb_iter=50, time_max=5, prin
 
     #println("Final best solution: $global_best")
     print_things && println("PSO finished at iteration $nb_iter, finished in $(time()-time_beginning)s, best solution: $global_best_cost")
+
+    if global_best_cost > 999999
+        return (mapping=nothing, mapping_cost=10e9)
+    end
+
     routing, routing_cost_shortest_path = shortest_path_routing(global_best, true)
     final_mapping = Mapping(v_network, s_network, global_best, routing)
 
