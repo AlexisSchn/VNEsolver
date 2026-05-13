@@ -641,7 +641,7 @@ function solve_PSO_better(instance; nb_particle=25, nb_iter=50, time_max=5, prin
     # Getting the most central virtual node
     most_central_v_node = argmin(closeness_centrality(v_network))
 
-
+    centrality_nodes = closeness_centrality(s_network)
 
     # ------ things for the PSO algorithm
     position = []
@@ -658,7 +658,11 @@ function solve_PSO_better(instance; nb_particle=25, nb_iter=50, time_max=5, prin
     for particle in 1:nb_particle
 
         partial_placement = zeros(Int, nv(v_network))
-        partial_placement[most_central_v_node] = rand(capacited_nodes)
+            
+        s_nodes_scores = [ (centrality_nodes[s_node] + 0.5 * rand() ) for s_node in capacited_nodes ]
+        s_node_start = capacited_nodes[argmin(s_nodes_scores)]
+
+        partial_placement[most_central_v_node] = s_node_start
         placement, placement_cost = complete_partial_placement(partial_placement; nb_nodes_to_try=length(capacited_nodes))
         routing, routing_cost = shortest_path_routing(placement)
         overall_cost = placement_cost + routing_cost
@@ -686,8 +690,11 @@ function solve_PSO_better(instance; nb_particle=25, nb_iter=50, time_max=5, prin
             if personal_best_cost[particle] > 9999999 # if the first isnt good, we reinitialized
                 
                 partial_placement = zeros(Int, nv(v_network))
-                partial_placement[most_central_v_node] = rand(capacited_nodes)
-                placement, placement_cost = complete_partial_placement(partial_placement; nb_nodes_to_try=ceil(Int,length(capacited_nodes)/4))
+                s_nodes_scores = [ (centrality_nodes[s_node] + 0.5 * rand() ) for s_node in capacited_nodes ]
+                s_node_start = capacited_nodes[argmin(s_nodes_scores)]
+
+                partial_placement[most_central_v_node] = s_node_start
+                        placement, placement_cost = complete_partial_placement(partial_placement; nb_nodes_to_try=ceil(Int,length(capacited_nodes)/4))
                 routing, routing_cost = shortest_path_routing(position[particle])
                 overall_cost = placement_cost + routing_cost
 

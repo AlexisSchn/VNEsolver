@@ -230,7 +230,7 @@ function solve_local_search(instance, initial_mapping; nb_local_search = 500, ti
 
 
         # reconstruct
-        placement, placement_cost = complete_partial_placement(placement; nb_nodes_to_try=ceil(Int, length(capacited_nodes)/3)) 
+        placement, placement_cost = complete_partial_placement(placement; nb_nodes_to_try=length(capacited_nodes)) 
         routing, routing_cost = shortest_path_routing(placement)
 
         current_cost = placement_cost + routing_cost

@@ -202,5 +202,31 @@ function solve_compact_ffplus_linear(instance; time_solver = 1000, stay_silent=t
         println("error! no solution possible...")
         return -999
     end
+
+    # Get the solution
+    x_values = value.(model[:x])
+    y_values = value.(model[:y])
+
+
+    println("\nNode placement:")
+    for v_node in vertices(v_network)
+        println("Of $v_node:")
+        for s_node in vertices(s_network_dir)
+            if x_values[v_node, s_node] > 0.01
+                println("   on $s_node with $(x_values[v_node, s_node])")
+            end
+        end
+    end
+
+    println("\nEdge routing:")
+    for v_edge in edges(v_network)
+        println("Of $v_edge:")
+        for s_edge in edges(s_network_dir)
+            if y_values[v_edge, s_edge] > 0.01
+                println("   on $s_edge with $(y_values[v_edge, s_edge])")
+            end
+        end
+    end
+
     return (objective_value(model))
 end
