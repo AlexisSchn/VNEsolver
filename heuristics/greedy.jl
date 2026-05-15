@@ -467,5 +467,6 @@ function solve_multi_greedy(instance; number_greedy = 10, time_max = 10, better=
         iter += 1
     end
 
+    println("Found $best_cost with $iter iterations")
     return (mapping=best_mapping, mapping_cost=best_cost)
 end

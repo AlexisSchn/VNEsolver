@@ -252,7 +252,7 @@ function solve_local_search(instance, initial_mapping; nb_local_search = 500, ti
     routing, routing_cost= shortest_path_routing(best_placement, true)
     final_mapping = Mapping(v_network, s_network, best_placement, routing)
 
-    println("Find the solution of $best_cost in $(time()-time_beginning)")
+    println("Find the solution of $best_cost in $(time()-time_beginning) and $step iters")
     return (mapping = final_mapping,
             mapping_cost = best_cost)
 end
