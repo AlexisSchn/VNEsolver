@@ -325,7 +325,7 @@ function solve_PSO_better(instance; nb_particle=25, nb_iter=50, time_max=5, prin
     end
 
 
-    print_things && println("Initialization done, best is $global_best_cost, Starting iterations...")
+    print_things && println("Initialization done, $nb_particle_init particles, best is $global_best_cost, Starting iterations...")
 
     # iterations
     iter = 1
