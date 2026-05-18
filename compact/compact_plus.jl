@@ -102,7 +102,7 @@ end
 
 
 
-function solve_compact_ffplus(instance; time_solver = 30, stay_silent=true, solution_first = false)
+function solve_compact_ffplus(instance; time_solver = 30, stay_silent=true, solution_first = false, random_seed=false)
     
     v_network = instance.v_network
     s_network_dir = instance.s_network_dir
@@ -120,6 +120,10 @@ function solve_compact_ffplus(instance; time_solver = 30, stay_silent=true, solu
 
     if solution_first
         set_optimizer_attribute(model, "CPXPARAM_Emphasis_MIP", 5)
+    end
+
+    if random_seed
+        set_optimizer_attribute(model, "CPXPARAM_RandomSeed", rand(1:9999))
     end
     
     optimize!(model)
