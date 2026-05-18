@@ -185,11 +185,11 @@ function solve_greedy(instance; nb_greedy = 10, time_max = 10)
 
             # Choose 10 random nodes (or less if the network is not that big)
             number_s_nodes = min(length(possible_s_nodes), nb_nodes_to_try)
-            #=
+
             if number_s_nodes == 0
                 return [], 10e9
             end
-            =#
+
             some_s_nodes = sample(possible_s_nodes, number_s_nodes; replace=false)
 
 
